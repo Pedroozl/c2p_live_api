@@ -1,0 +1,26 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["live"]
+}
+
+model streams {
+  id_stream  Int       @id(map: "streams_pk") @default(autoincrement())
+  title      String?
+  date       DateTime? @db.Timestamp(6)
+  start_time DateTime? @db.Timestamp(6)
+  end_time   DateTime? @db.Timestamp(6)
+  started_by Int?
+  ended_by   Int?
+  finished   Boolean?  @default(false)
+  videoid    String?
+  expedient  Json?     @db.Json
+  agenda     Json?     @db.Json
+
+  @@schema("live")
+}
