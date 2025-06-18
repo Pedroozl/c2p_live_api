@@ -28,9 +28,8 @@ app.use(cors({
   origin: '*',
 }))
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/api", api);
 
-api.get("/live/current", async (req, res) => {
+app.get("/stream/current", async (req, res) => {
   if (!cache.get("currentStream")) {
     var last = await prisma.streams.findFirst({
       where: {
@@ -58,7 +57,7 @@ api.get("/live/current", async (req, res) => {
   });
 })
 
-api.get("/start-stream", async (req, res) => {
+app.get("/stream/start", async (req, res) => {
   var { videoId } = req.query;
   if (!videoId || typeof videoId !== "string") {
     return res.status(400).json({ error: "Missing or invalid videoId" });
